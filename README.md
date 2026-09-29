@@ -1,6 +1,6 @@
 # 폭염 취약지역 분석 | Orange3
 
-> 폭염 취약지역 및 무더위쉼터 사각지대 분석 프로젝트의 **Orange3 분석·시각화 결과와 발표자료**를 정리한 저장소입니다.
+> 폭염 취약지역과 무더위쉼터 공급 사각지대를 분석한 프로젝트의 **Orange3 분석 파일 및 주요 시각화 결과**를 정리한 저장소입니다.
 
 전체 프로젝트의 분석 배경, 데이터 전처리, 지표 설계 및 Power BI 분석 과정은 아래 메인 저장소에서 확인할 수 있습니다.
 
@@ -8,39 +8,51 @@
 
 ---
 
-## Orange3 분석
+## 주요 시각화
 
-Orange3를 활용하여 데이터를 탐색하고 분석 결과를 시각적으로 확인했습니다.
+### 01. 2025년 폭염 피해 현황
 
-### Workflow
+![2025년 폭염 피해 현황](images/01_heatwave_overview.jpg)
 
-![Orange3 Workflow](images/01_workflow.jpg)
+전국 폭염 사각지대 비율과 주요 위험지역을 한 화면에서 확인하고,  
+온열질환 피해도·고령인구 취약도·쉼터 대응 부족도를 함께 비교했습니다.
 
 ---
 
-## Visualization
+### 02. 온열질환 발생 추이 및 특성
 
-### 01
+![온열질환 발생 추이 및 특성](images/02_heat_illness_trend.jpg)
 
-![Visualization 01](images/02_visualization.jpg)
+최근 6년간 온열질환자 발생 추이를 확인하고,  
+지역별 실내·실외 온열질환자 비율을 비교했습니다.
 
-### 02
+---
 
-![Visualization 02](images/03_visualization.jpg)
+### 03. 고령인구와 폭염일수 현황
 
-### 03
+![고령인구 및 폭염일수 현황](images/03_elderly_heatwave_status.jpg)
 
-![Visualization 03](images/04_result.jpg)
+폭염일수가 많은 지역과 고령인구 비율이 높은 지역을 각각 확인하고,  
+지역별 폭염일수와 고령인구 비율을 함께 비교했습니다.
+
+---
+
+### 04. 무더위쉼터 공급 진단
+
+![무더위쉼터 공급 진단](images/04_shelter_supply_diagnosis.jpg)
+
+고령인구 대비 쉼터 수용 수준과 온열질환 피해를 함께 비교하여  
+쉼터 공급이 부족하면서 피해 수준이 높은 **사각지대 후보 지역**을 확인했습니다.
 
 ---
 
 ## Files
 
-| 파일 | 내용 |
+| 경로 | 내용 |
 |---|---|
-| `orange3/heatwave_analysis.ows` | Orange3 분석 Workflow |
-| `presentation/heatwave_analysis_presentation.pptx` | 프로젝트 발표자료 |
-| `images/` | Orange3 분석 및 시각화 결과 이미지 |
+| `orange3/` | Orange3 분석 Workflow 파일 |
+| `presentation/` | 프로젝트 발표자료 |
+| `images/` | 주요 분석 및 시각화 결과 이미지 |
 
 ---
 
@@ -48,6 +60,6 @@ Orange3를 활용하여 데이터를 탐색하고 분석 결과를 시각적으�
 
 본 저장소는 **폭염 취약지역 · 무더위쉼터 사각지대 분석 프로젝트의 Orange3 결과물 저장소**입니다.
 
-프로젝트의 전체 분석 과정과 Power BI 결과는 아래 저장소에서 확인할 수 있습니다.
+분석 배경, 데이터, 전처리 및 Power BI 분석 결과는 메인 프로젝트에서 확인할 수 있습니다.
 
 ➡️ **[Heatwave Analysis - Main Repository](https://github.com/hmh178-gif/heatwave)**
