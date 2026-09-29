@@ -51,8 +51,8 @@
 
 프로젝트의 분석 배경, 분석 과정 및 주요 결과를 정리한 최종 발표자료입니다.
 
-- 📄 **[발표자료 PDF 보기](presentation/heatwave_presentation.pdf)**
-- 📊 **[발표자료 PPTX 다운로드](presentation/heatwave_presentation.pptx)**
+- 📄 **[발표자료 PDF 보기](heatwave_presentation.pdf)**
+- 📊 **[발표자료 PPTX 다운로드](heatwave_presentation.pptx)**
 
 PDF 파일은 GitHub에서 바로 열어볼 수 있고,  
 PPTX 파일은 원본 발표자료 확인 및 다운로드용으로 제공합니다.
