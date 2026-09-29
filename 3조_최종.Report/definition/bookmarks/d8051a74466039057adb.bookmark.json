@@ -1,0 +1,665 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "전국",
+  "name": "d8051a74466039057adb",
+  "options": {
+    "targetVisualNames": [
+      "d4781f6358c374a92da6",
+      "14e7fbfb37ab461129be",
+      "321fd8fa3a08d605ee09",
+      "8363a2db98b2b6218600"
+    ]
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "7a6c96659a873417cc09",
+    "sections": {
+      "7a6c96659a873417cc09": {
+        "visualContainers": {
+          "14e7fbfb37ab461129be": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b2f7faf1254e2d2a2966",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "쉼터 최댓값"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "2ecad24ba76eba67e0e2",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "계기 최솟값"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e649d66874868a33507a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "계기 기준값"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "16cfc7161c9e9189aa04",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "선택 쉼터 대응 부족도"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "b5971e0390da7cd09aa8",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "시군구"
+                        }
+                      },
+                      "Property": "사각지대 유형"
+                    }
+                  },
+                  "howCreated": 1
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "gauge",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "선택 쉼터 대응 부족도"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "1cead66391979c1984aa": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "834c92c1b7ed7015952b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "현재 폭염 사각지대 비율"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "8c81632093a5ab302448",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "현재·잠재 폭염 사각지대 비율"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "현재 폭염 사각지대 비율"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "2fea5dfd7042a3726cd4": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b34a882f905c42916085",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "시군구"
+                        }
+                      },
+                      "Property": "사각지대 유형"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e222499491589620ab68",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "시군구"
+                        }
+                      },
+                      "Property": "시군구코드"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c6098d4e354b1d24bd83",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "시군구"
+                            }
+                          },
+                          "Property": "분석_폭염일수"
+                        }
+                      },
+                      "Function": 4
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "30a0a9e5a0e0714a281d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "시군구"
+                            }
+                          },
+                          "Property": "분석_폭염단위구분"
+                        }
+                      },
+                      "Function": 3
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "0a2da1fe56d79538d1a8",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "시군구"
+                            }
+                          },
+                          "Property": "고령인구 비율_열"
+                        }
+                      },
+                      "Function": 4
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "47ddc25aa698018a2cab",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "시군구"
+                            }
+                          },
+                          "Property": "고령인구 1천명당 수용인원_열"
+                        }
+                      },
+                      "Function": 4
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "468598340279089a3085",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "시군구"
+                            }
+                          },
+                          "Property": "온열질환 발생률_열"
+                        }
+                      },
+                      "Function": 4
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "b66a48cf9843893b4d6b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "선택 시군구"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "shapeMap",
+              "objects": {}
+            }
+          },
+          "321fd8fa3a08d605ee09": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "91755e120b9c18b8d0b5",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "계기 공통 최댓값"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "2c6e8fe48aa4497b8b96",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "계기 최솟값"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "aa033951da067c4004ea",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "계기 기준값"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "8c128c36c29c44a90397",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "선택 온열질환 피해도"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "fa9e92a89640a0955292",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "시군구"
+                        }
+                      },
+                      "Property": "사각지대 유형"
+                    }
+                  },
+                  "howCreated": 1
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "gauge",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "선택 온열질환 피해도"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "8363a2db98b2b6218600": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "8cb96fd90383070a3a0c",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "계기 공통 최댓값"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1c6458b5e55ee76c676c",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "계기 최솟값"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "0eb303fd9b505d964e1e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "계기 기준값"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "df8cefcb026e0ddea016",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "선택 고령인구 취약도"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "70ce0df1015199107719",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "시군구"
+                        }
+                      },
+                      "Property": "사각지대 유형"
+                    }
+                  },
+                  "howCreated": 1
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "gauge",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_측정값"
+                        }
+                      },
+                      "Property": "선택 고령인구 취약도"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "bd61aa52cb9032056e86": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "c5a3e1fe8e787e26ad2d": {
+            "singleVisual": {
+              "visualType": "pageNavigator",
+              "objects": {}
+            }
+          },
+          "d3f6bba51d4002522a28": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "65b12389a70c5b06e703",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "시",
+                        "Entity": "시군구",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "시"
+                                    }
+                                  },
+                                  "Property": "사각지대 유형"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'잠재 사각지대'"
+                                  }
+                                }
+                              ],
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'현재 사각지대'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "시군구"
+                        }
+                      },
+                      "Property": "사각지대 유형"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "33e29163d732a6a7145b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "시군구"
+                        }
+                      },
+                      "Property": "시군구_표시"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "advancedSlicerVisual",
+              "objects": {}
+            }
+          },
+          "d8e27148a08e5896bb10": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "e6c2b9d87266007665e0": {
+            "singleVisual": {
+              "visualType": "bookmarkNavigator",
+              "objects": {}
+            }
+          }
+        },
+        "visualContainerGroups": {
+          "d4781f6358c374a92da6": {
+            "isHidden": false
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

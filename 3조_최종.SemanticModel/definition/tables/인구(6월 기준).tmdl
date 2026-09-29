@@ -1,0 +1,71 @@
+table '인구(6월 기준)'
+	lineageTag: d4d3164b-9b0c-416b-b870-9b6b7172093f
+
+	column 시도
+		dataType: string
+		lineageTag: 6a601874-5176-4d25-99cc-951f0d38e3a2
+		summarizeBy: none
+		sourceColumn: 시도
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시도코드
+		dataType: string
+		lineageTag: 424101c1-b564-41e6-adc8-b48896f64366
+		summarizeBy: none
+		sourceColumn: 시도코드
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시군구
+		dataType: string
+		lineageTag: 1183ad16-a2af-4261-918a-07ec6d4566f3
+		summarizeBy: none
+		sourceColumn: 시군구
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시군구코드
+		dataType: string
+		lineageTag: 6974a353-b942-4dcc-adc3-92e8c3e38ec5
+		summarizeBy: none
+		sourceColumn: 시군구코드
+
+		annotation SummarizationSetBy = Automatic
+
+	column '고령인구(65세 이상)'
+		dataType: int64
+		formatString: 0
+		lineageTag: c4825c94-df02-4057-a5bb-3464c9ac6d64
+		summarizeBy: sum
+		sourceColumn: 고령인구(65세 이상)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 전체인구
+		dataType: int64
+		formatString: 0
+		lineageTag: f74c6367-71f6-44db-b1fb-0e3d4a620bc5
+		summarizeBy: sum
+		sourceColumn: 전체인구
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '인구(6월 기준)' = m
+		mode: import
+		source =
+				let
+				    원본 = Excel.Workbook(File.Contents("C:\Users\young\Downloads\고령 및 전체 인구.xlsx"), null, true),
+				    #"인구(6월 기준)_Sheet" = 원본{[Item="인구(6월 기준)",Kind="Sheet"]}[Data],
+				    #"승격된 헤더" = Table.PromoteHeaders(#"인구(6월 기준)_Sheet", [PromoteAllScalars=true]),
+				    #"변경된 유형" = Table.TransformColumnTypes(#"승격된 헤더",{{"시도", type text}, {"시도코드", Int64.Type}, {"시군구", type text}, {"시군구코드", Int64.Type}, {"고령인구(65세 이상)", Int64.Type}, {"전체인구", Int64.Type}}),
+				    #"제거된 빈 행" = Table.SelectRows(#"변경된 유형", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"변경된 유형1" = Table.TransformColumnTypes(#"제거된 빈 행",{{"시도코드", type text}, {"시군구코드", type text}}),
+				    #"필터링된 행" = Table.SelectRows(#"변경된 유형1", each true)
+				in
+				    #"필터링된 행"
+
+	annotation PBI_NavigationStepName = 탐색
+
+	annotation PBI_ResultType = Table
+

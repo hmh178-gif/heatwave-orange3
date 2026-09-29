@@ -1,0 +1,43 @@
+relationship AutoDetected_c216eb08-dc35-41f3-ac8b-7a1102ea2441
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: '인구(6월 기준)'.시군구코드
+	toColumn: 시군구.시군구코드
+
+relationship AutoDetected_034eeccf-47b9-4de8-8be9-69cee6280a53
+	fromColumn: 시군구.시도코드
+	toColumn: 시도.시도코드
+
+relationship AutoDetected_3cca3122-2ac1-4250-b52c-895fe1c50dd3
+	fromColumn: 무더위쉼터.시군구코드
+	toColumn: 시군구.시군구코드
+
+relationship AutoDetected_7e7ed6ba-42fd-48be-b875-41dba2dbb149
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 시군구_폭염일수.시군구코드
+	toColumn: 시군구.시군구코드
+
+relationship AutoDetected_cff5ea42-d656-4402-9d5e-f2e0e49c0b36
+	fromColumn: 날짜별_온열질환.시군구코드
+	toColumn: 시군구.시군구코드
+
+relationship AutoDetected_58d5cf64-73bf-4414-a10b-be6fd04235ec
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 전체기간_온열질환.시군구코드
+	toColumn: 시군구.시군구코드
+
+relationship 7cd4cfc0-21ce-4fcc-9242-bf292b861887
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 캘린더.날짜
+	toColumn: LocalDateTable_44e17739-f5ed-4c28-83a5-9fb24b9802f9.Date
+
+relationship 897c5fe5-e498-2774-94db-4c92515ddd18
+	fromColumn: 날짜별_온열질환.날짜
+	toColumn: 캘린더.날짜
+
+relationship AutoDetected_80a9c040-0c4d-402e-a1b8-b583ca6a4b06
+	fromColumn: 폭염_온열질환자.시도
+	toColumn: 시도.시도
+

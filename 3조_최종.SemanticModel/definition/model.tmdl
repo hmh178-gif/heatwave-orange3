@@ -1,0 +1,31 @@
+model Model
+	culture: ko-KR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: ko-KR
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["시군구","인구(6월 기준)","시도","무더위쉼터","캘린더","시군구_폭염일수","날짜별_온열질환","전체기간_온열질환","_측정값","폭염_온열질환자","연도별온열질환"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 시군구
+ref table '인구(6월 기준)'
+ref table 시도
+ref table 무더위쉼터
+ref table 캘린더
+ref table 시군구_폭염일수
+ref table 날짜별_온열질환
+ref table DateTableTemplate_1908ea3a-9dbe-4b6e-9799-3b6d3d94c6da
+ref table 전체기간_온열질환
+ref table LocalDateTable_44e17739-f5ed-4c28-83a5-9fb24b9802f9
+ref table _측정값
+ref table 폭염_온열질환자
+ref table 연도별온열질환
+
+ref cultureInfo ko-KR
+

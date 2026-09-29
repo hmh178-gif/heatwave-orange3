@@ -1,0 +1,84 @@
+table 날짜별_온열질환
+	lineageTag: 90117cd5-96d3-43a3-81cb-10d68bf0ee4f
+
+	column 날짜
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: 6b585392-0e0a-4367-b47a-5ced6074b0d7
+		summarizeBy: none
+		sourceColumn: 날짜
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 시도
+		dataType: string
+		lineageTag: 7d6cf500-cdd5-41f4-9006-d0edcebca48a
+		summarizeBy: none
+		sourceColumn: 시도
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시도코드
+		dataType: string
+		lineageTag: de3d5d81-8c45-4ea3-9f2a-5a00c268e28b
+		summarizeBy: none
+		sourceColumn: 시도코드
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시군구
+		dataType: string
+		lineageTag: 4bd06501-94c0-47fe-87da-cf2cbd8e538c
+		summarizeBy: none
+		sourceColumn: 시군구
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시군구코드
+		dataType: string
+		lineageTag: 7fe2bf1e-68f0-4f7e-9500-aa74c854cc41
+		summarizeBy: none
+		sourceColumn: 시군구코드
+
+		annotation SummarizationSetBy = Automatic
+
+	column 온열질환자수
+		dataType: int64
+		formatString: 0
+		lineageTag: b9f2459e-634a-41be-96be-4a2c0d45f615
+		summarizeBy: sum
+		sourceColumn: 온열질환자수
+
+		annotation SummarizationSetBy = Automatic
+
+	column 추정사망자수
+		dataType: int64
+		formatString: 0
+		lineageTag: 88248d37-dd29-4a1c-8312-fd886b785947
+		summarizeBy: sum
+		sourceColumn: 추정사망자수
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 날짜별_온열질환 = m
+		mode: import
+		source =
+				let
+				    원본 = Excel.Workbook(File.Contents("C:\Users\young\Downloads\온열질환자수.xlsx"), null, true),
+				    날짜별_온열질환_Sheet = 원본{[Item="날짜별_온열질환",Kind="Sheet"]}[Data],
+				    #"승격된 헤더" = Table.PromoteHeaders(날짜별_온열질환_Sheet, [PromoteAllScalars=true]),
+				    #"변경된 유형" = Table.TransformColumnTypes(#"승격된 헤더",{{"날짜", type date}, {"시도", type text}, {"시도코드", Int64.Type}, {"시군구", type text}, {"시군구코드", Int64.Type}, {"온열질환자수", Int64.Type}, {"추정사망자수", Int64.Type}}),
+				    #"제거된 빈 행" = Table.SelectRows(#"변경된 유형", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"변경된 유형1" = Table.TransformColumnTypes(#"제거된 빈 행",{{"시도코드", type text}, {"시군구코드", type text}})
+				in
+				    #"변경된 유형1"
+
+	annotation PBI_NavigationStepName = 탐색
+
+	annotation PBI_ResultType = Table
+

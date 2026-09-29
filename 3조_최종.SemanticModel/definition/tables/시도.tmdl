@@ -1,0 +1,36 @@
+table 시도
+	lineageTag: 40b86bf3-ecfb-4df0-80e7-853953ab48aa
+
+	column 시도코드
+		dataType: string
+		lineageTag: 3132d7ad-a37a-47ae-8303-c4f3e717710d
+		summarizeBy: none
+		sourceColumn: 시도코드
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시도
+		dataType: string
+		lineageTag: 1555650a-f007-4646-952c-a1c4497897ed
+		summarizeBy: none
+		sourceColumn: 시도
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 시도 = m
+		mode: import
+		source =
+				let
+				    원본 = Excel.Workbook(File.Contents("C:\Users\young\Downloads\시도코드.xlsx"), null, true),
+				    시도_Sheet = 원본{[Item="시도",Kind="Sheet"]}[Data],
+				    #"승격된 헤더" = Table.PromoteHeaders(시도_Sheet, [PromoteAllScalars=true]),
+				    #"변경된 유형" = Table.TransformColumnTypes(#"승격된 헤더",{{"시도코드", Int64.Type}, {"시도", type text}}),
+				    #"제거된 빈 행" = Table.SelectRows(#"변경된 유형", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"변경된 유형1" = Table.TransformColumnTypes(#"제거된 빈 행",{{"시도코드", type text}})
+				in
+				    #"변경된 유형1"
+
+	annotation PBI_NavigationStepName = 탐색
+
+	annotation PBI_ResultType = Table
+

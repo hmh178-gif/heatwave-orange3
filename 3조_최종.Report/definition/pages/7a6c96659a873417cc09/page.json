@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "7a6c96659a873417cc09",
+  "displayName": "폭염 피해 현황",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "d3f6bba51d4002522a28",
+      "target": "d8e27148a08e5896bb10",
+      "type": "NoFilter"
+    },
+    {
+      "source": "2fea5dfd7042a3726cd4",
+      "target": "d3f6bba51d4002522a28",
+      "type": "NoFilter"
+    }
+  ]
+}

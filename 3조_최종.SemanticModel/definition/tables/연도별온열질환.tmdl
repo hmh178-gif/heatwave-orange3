@@ -1,0 +1,48 @@
+table 연도별온열질환
+	lineageTag: f8ef15ee-8fc1-4fe9-89b6-558e24548ae5
+
+	measure '전년대비 증감량' =
+			
+			VAR CurYear = SELECTEDVALUE('연도별온열질환'[연도])
+			VAR CurVal  = SUM('연도별온열질환'[온열질환자수])
+			VAR PrevVal =
+			    CALCULATE(
+			        SUM('연도별온열질환'[온열질환자수]),
+			        '연도별온열질환'[연도] = CurYear - 1
+			    )
+			RETURN
+			    IF(ISBLANK(PrevVal), CurVal, CurVal - PrevVal)
+		formatString: 0
+		lineageTag: 865e299b-d8f0-4ae9-bd32-417cc02732bc
+
+	column 연도
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d80e0cf-779f-4542-b739-fb67bbb98c62
+		summarizeBy: sum
+		sourceColumn: 연도
+
+		annotation SummarizationSetBy = Automatic
+
+	column 온열질환자수
+		dataType: int64
+		formatString: 0
+		lineageTag: 3741a079-43a5-4966-b838-4ef78575841d
+		summarizeBy: sum
+		sourceColumn: 온열질환자수
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 연도별온열질환 = m
+		mode: import
+		source =
+				let
+				    원본 = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("PcvLDQAgCATRXjjvgZ9gL4b+25CQ6PVl5hxSViaQgHNTYUAGLOOBDqzwB9ag2PIXbzAk/2I1ODyYqi4=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [연도 = _t, 온열질환자수 = _t]),
+				    #"변경된 유형" = Table.TransformColumnTypes(원본,{{"연도", Int64.Type}, {"온열질환자수", Int64.Type}})
+				in
+				    #"변경된 유형"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

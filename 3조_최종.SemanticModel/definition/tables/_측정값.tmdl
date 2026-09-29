@@ -1,0 +1,638 @@
+table _측정값
+	lineageTag: 1510fcba-937d-46e4-bcf5-82f5d8f5e6ce
+
+	measure '총 온열질환자수' = SUM('날짜별_온열질환'[온열질환자수])
+		formatString: 0
+		lineageTag: ad25cd65-98f9-41f6-a971-e3d948fc635f
+
+		changedProperty = IsHidden
+
+	measure '총 추정사망자수' = SUM('날짜별_온열질환'[추정사망자수])
+		formatString: 0
+		lineageTag: f8aee023-7741-4250-914a-96593cbd90f3
+
+	measure '총 전체인구' = SUM('인구(6월 기준)'[전체인구])
+		formatString: 0
+		lineageTag: 7f26aa97-472e-4d37-8870-56d600f9c85a
+
+	measure '총 고령인구' = SUM('인구(6월 기준)'[고령인구(65세 이상)])
+		formatString: 0
+		lineageTag: 840d406e-6ecd-4ae5-91cc-6b5deafee0d4
+
+	measure '고령인구 비율' = DIVIDE(SUM('인구(6월 기준)'[고령인구(65세 이상)]), SUM('인구(6월 기준)'[전체인구]))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: a30bb797-0dca-4ba0-808a-8c025c55739b
+
+	measure '온열질환 발생률(10만명당)' = DIVIDE([총 온열질환자수], [총 전체인구], 0) * 100000
+		formatString: 0.0
+		lineageTag: ff8554c4-168c-41b5-8469-1dad4860e50b
+
+	measure '총 무더위쉼터 수' = DISTINCTCOUNT('무더위쉼터'[쉼터번호])
+		formatString: #,0
+		lineageTag: 374ed353-9620-4abe-b363-1b9a622ef303
+
+	measure '총 쉼터 수용인원' = SUM('무더위쉼터'[이용가능인원])
+		formatString: 0
+		lineageTag: c79ff6a8-6c46-4685-98b5-c686f4ab66bc
+
+	measure '고령인구 1만명당 쉼터 수' = DIVIDE([총 무더위쉼터 수],[총 고령인구],0) * 10000
+		lineageTag: 8fcbd852-6a13-4b13-843b-9504963a9e8a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '고령인구 1천명당 수용인원' = DIVIDE([총 쉼터 수용인원], [총 고령인구], 0) * 1000
+		lineageTag: 906b276c-046f-4f50-a15a-847c66cb3830
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '지역 적용 폭염일수' = MAX('시군구_폭염일수'[폭염일수])
+		formatString: 0
+		lineageTag: 1f91e404-1e7a-4879-915c-9c94ac44dbf3
+
+	measure '최다 발생일 환자수' = ```
+			
+			MAXX(
+			    VALUES('캘린더'[날짜]),
+			    CALCULATE(SUM('날짜별_온열질환'[온열질환자수]))
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 796bb51c-f7c9-45af-b028-5131021aeb00
+
+	measure '환자 최다 발생일' =
+			
+			VAR MaxPatients =[최다 발생일 환자수]
+			RETURN
+			MAXX(
+			    FILTER(
+			        VALUES('캘린더'[날짜]),
+			        CALCULATE(SUM('날짜별_온열질환'[온열질환자수])) = MaxPatients
+			    ),
+			    '캘린더'[날짜]
+			)
+		formatString: yyyy-mm-dd
+		lineageTag: f6a1eed7-5d62-4ca2-85a9-4e7071dbeacd
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure '전체 시군구 수' =
+			
+			DISTINCTCOUNT('시군구'[시군구코드])
+		formatString: 0
+		lineageTag: 6c3a9141-0ae7-4fde-a4a2-cc83a4a5ad2d
+
+	measure '현재 사각지대 수' =
+			
+			CALCULATE(
+			    [전체 시군구 수],
+			    '시군구'[사각지대 유형] = "현재 사각지대"
+			)
+		formatString: 0
+		lineageTag: c7814098-39aa-4e96-96b0-b90d44dee371
+
+	measure '잠재 사각지대 수' =
+			
+			CALCULATE(
+			    [전체 시군구 수],
+			    '시군구'[사각지대 유형] = "잠재 사각지대"
+			)
+		formatString: 0
+		lineageTag: 5d21bba6-5bfc-47e6-90a1-641cbd667342
+
+	measure '피해 집중지역 수' =
+			
+			CALCULATE(
+			    [전체 시군구 수],
+			    '시군구'[사각지대 유형] = "피해 집중지역"
+			)
+		formatString: 0
+		lineageTag: 7a13dc3c-e024-40d2-ba3c-67f5927ce817
+
+	measure '사각지대 후보 수' =
+			
+			[현재 사각지대 수] + [잠재 사각지대 수]
+		formatString: 0
+		lineageTag: 1f5ff148-3849-4507-959d-e159848c2293
+
+	measure '선택 시군구' =
+			
+			SELECTEDVALUE(
+			    '시군구'[시군구],
+			    "-"
+			)
+		lineageTag: d2dac5fd-ef3a-479e-90ea-55aba3c85f86
+
+	measure '지역별 폭염일수 최댓값' =
+			
+			MAX('시군구'[분석_폭염일수])
+		formatString: 0
+		lineageTag: 26158128-52ca-477a-a0c7-b59fc6b4cb11
+
+	measure '폭염 발생지역 수' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('시군구'[시군구코드]),
+			    '시군구'[분석_폭염일수] > 0
+			)
+		formatString: 0
+		lineageTag: ad39641b-b1d4-4457-9427-f4b85aa9eab1
+
+	measure 발생률_중앙값 =
+			
+			MEDIANX(
+			    VALUES('시군구'[시군구코드]),
+			    [온열질환 발생률(10만명당)]
+			)
+		lineageTag: f1680748-3600-4b56-826f-f8e13cd186e4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '폭염 사각지대 지역 수' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('시군구'[시군구코드]),
+			    '시군구'[사각지대 유형] IN {
+			        "현재 사각지대",
+			        "잠재 사각지대"
+			    }
+			)
+		formatString: 0
+		lineageTag: 1f149b80-4861-4660-a0d8-bdfad8ed6c0d
+
+	measure '전체 지역 수' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('시군구'[시군구코드]),
+			    REMOVEFILTERS('시군구'[사각지대 유형])
+			)
+		formatString: 0
+		lineageTag: 5e85c2bd-0f6f-43ff-84eb-6849d1156f9d
+
+	measure '폭염 사각지대 지역 비율' =
+			
+			DIVIDE(
+			    [폭염 사각지대 지역 수],
+			    [전체 지역 수],
+			    0
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 5de76de3-8f12-4d85-a54a-90323b9e6e62
+
+	measure '선택 유형 온열질환자 비중' =
+			
+			DIVIDE(
+			    [총 온열질환자수],
+			    CALCULATE(
+			        [총 온열질환자수],
+			        REMOVEFILTERS('시군구'[사각지대 유형])
+			    ),
+			    0
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 82793cdd-7951-40ca-bd60-91f7f8f855a5
+
+	measure '선택 유형 추정사망자 비중' =
+			
+			DIVIDE(
+			    [총 추정사망자수],
+			    CALCULATE(
+			        [총 추정사망자수],
+			        REMOVEFILTERS('시군구'[사각지대 유형])
+			    ),
+			    0
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: cf2ca4e4-84f8-4a9a-a726-5e11d93989f9
+
+	measure '선택 유형 고령인구 비중' =
+			
+			DIVIDE(
+			    [총 고령인구],
+			    CALCULATE(
+			        [총 고령인구],
+			        REMOVEFILTERS('시군구'[사각지대 유형])
+			    ),
+			    0
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 1b545c83-49ad-40b3-b584-17cb3814ac1d
+
+	measure '선택 유형 시군구 수' =
+			
+			DISTINCTCOUNT('시군구'[시군구코드])
+		formatString: 0
+		lineageTag: 1bf5c74c-014e-400d-b3b1-56f28a7f4d38
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '전국 평균 온열질환 발생률' =
+			
+			AVERAGEX(
+			    FILTER(
+			        ALL('시군구'),
+			        NOT ISBLANK('시군구'[온열질환 발생률_열])
+			    ),
+			    '시군구'[온열질환 발생률_열]
+			)
+		lineageTag: f0e7ac41-f9a8-4f6a-8412-74732814f57e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '사각지대 평균 온열질환 발생률' =
+			
+			AVERAGEX(
+			    FILTER(
+			        ALL('시군구'),
+			        (
+			            '시군구'[사각지대 유형] = "현재 사각지대"
+			            || '시군구'[사각지대 유형] = "잠재 사각지대"
+			        )
+			        && NOT ISBLANK('시군구'[온열질환 발생률_열])
+			    ),
+			    '시군구'[온열질환 발생률_열]
+			)
+		lineageTag: e50cc3c7-a4c7-4b74-bfda-6ed7add44709
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '전국 평균 고령인구 비율' =
+			
+			AVERAGEX(
+			    FILTER(
+			        ALL('시군구'),
+			        NOT ISBLANK('시군구'[고령인구 비율_열])
+			    ),
+			    '시군구'[고령인구 비율_열]
+			)
+		lineageTag: e6b2f857-39e6-491c-8521-b1dec4f0ba6c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '사각지대 평균 고령인구 비율' =
+			
+			AVERAGEX(
+			    FILTER(
+			        ALL('시군구'),
+			        (
+			            '시군구'[사각지대 유형] = "현재 사각지대"
+			            || '시군구'[사각지대 유형] = "잠재 사각지대"
+			        )
+			        && NOT ISBLANK('시군구'[고령인구 비율_열])
+			    ),
+			    '시군구'[고령인구 비율_열]
+			)
+		lineageTag: 6b8ff944-b98c-402b-8a77-056984974c46
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '전국 평균 쉼터 수용 수준' =
+			
+			AVERAGEX(
+			    FILTER(
+			        ALL('시군구'),
+			        NOT ISBLANK(
+			            '시군구'[고령인구 1천명당 수용인원_열]
+			        )
+			    ),
+			    '시군구'[고령인구 1천명당 수용인원_열]
+			)
+		lineageTag: 29fc0741-7e25-40a0-9c23-5cbe9b788ff9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '사각지대 평균 쉼터 수용 수준' =
+			
+			AVERAGEX(
+			    FILTER(
+			        ALL('시군구'),
+			        (
+			            '시군구'[사각지대 유형] = "현재 사각지대"
+			            || '시군구'[사각지대 유형] = "잠재 사각지대"
+			        )
+			        && NOT ISBLANK(
+			            '시군구'[고령인구 1천명당 수용인원_열]
+			        )
+			    ),
+			    '시군구'[고령인구 1천명당 수용인원_열]
+			)
+		lineageTag: 8ab798d9-fe60-4d29-8f28-e62fe8c15b8c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '계기 최솟값' =
+			
+			0
+		formatString: 0
+		lineageTag: fdd0275d-343e-4f7f-962c-f721805611ee
+
+	measure '계기 기준값' =
+			
+			100
+		formatString: 0
+		lineageTag: 8e1eeaef-edf3-47f0-9c3d-39dd98e11da5
+
+	measure '현재 사각지대 평균 온열질환 발생률' =
+			
+			AVERAGEX(
+			    FILTER(
+			        ALL('시군구'),
+			        '시군구'[사각지대 유형] = "현재 사각지대"
+			            && NOT ISBLANK('시군구'[온열질환 발생률_열])
+			    ),
+			    '시군구'[온열질환 발생률_열]
+			)
+		lineageTag: ab6dca64-9d89-4514-bffb-5a175f7e97f1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '현재 사각지대 평균 고령인구 비율' =
+			
+			AVERAGEX(
+			    FILTER(
+			        ALL('시군구'),
+			        '시군구'[사각지대 유형] = "현재 사각지대"
+			            && NOT ISBLANK('시군구'[고령인구 비율_열])
+			    ),
+			    '시군구'[고령인구 비율_열]
+			)
+		lineageTag: 604b41c3-5d96-4a3f-8b1c-f6169dced09b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '현재 사각지대 평균 쉼터 수용 수준' =
+			
+			AVERAGEX(
+			    FILTER(
+			        ALL('시군구'),
+			        '시군구'[사각지대 유형] = "현재 사각지대"
+			            && NOT ISBLANK(
+			                '시군구'[고령인구 1천명당 수용인원_열]
+			            )
+			    ),
+			    '시군구'[고령인구 1천명당 수용인원_열]
+			)
+		lineageTag: 91a83e5d-d4c3-47c9-a083-17c50bcfc9af
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '현재 사각지대 고령인구 취약지수' =
+			
+			DIVIDE(
+			    [현재 사각지대 평균 고령인구 비율],
+			    [전국 평균 고령인구 비율],
+			    0
+			) * 100
+		lineageTag: a62bdcef-7dd1-4415-8318-9f3c66f1b0ed
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '현재 사각지대 쉼터 대응 부족지수' =
+			
+			DIVIDE(
+			    [전국 평균 쉼터 수용 수준],
+			    [현재 사각지대 평균 쉼터 수용 수준],
+			    0
+			) * 100
+		lineageTag: 674d710b-962f-44bf-9371-81bd5508266d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '현재 사각지대 온열질환 피해지수' =
+			
+			DIVIDE(
+			    [현재 사각지대 평균 온열질환 발생률],
+			    [전국 평균 온열질환 발생률],
+			    0
+			) * 100
+		lineageTag: 878552a1-048f-43a6-9add-666f357d9c74
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '계기 목표값' =
+			
+			100
+		formatString: 0
+		lineageTag: ee7396d6-e7df-4e0e-8287-1f4ddfa156b0
+
+	measure '계기 공통 최댓값' =
+			
+			200
+		formatString: 0
+		lineageTag: 27e2e22d-29b4-424c-b5a9-41c5c761a4e6
+
+	measure '온열질환 전국 대비 차이' =
+			
+			DIVIDE(
+			    [현재 사각지대 평균 온열질환 발생률]
+			        - [전국 평균 온열질환 발생률],
+			    [전국 평균 온열질환 발생률],
+			    0
+			)
+		lineageTag: dad3b330-1c97-4d00-9883-0e31d638b0e9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '고령인구 전국 대비 차이' =
+			
+			DIVIDE(
+			    [현재 사각지대 평균 고령인구 비율]
+			        - [전국 평균 고령인구 비율],
+			    [전국 평균 고령인구 비율],
+			    0
+			)
+		lineageTag: 439236cc-7735-45c1-b6cd-e38d2c7889d5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '쉼터 대응 부족률' =
+			
+			DIVIDE(
+			    [전국 평균 쉼터 수용 수준]
+			        - [현재 사각지대 평균 쉼터 수용 수준],
+			    [전국 평균 쉼터 수용 수준],
+			    0
+			)
+		lineageTag: 9fa5e581-bb78-4b1c-a5b5-acca3c4e39cb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '온열질환 차이 문구' =
+			
+			VAR DifferenceValue =
+			    [온열질환 전국 대비 차이]
+			RETURN
+			    "전국 대비 "
+			        & IF(DifferenceValue >= 0, "+", "")
+			        & FORMAT(DifferenceValue, "0%")
+		lineageTag: d74e6214-d257-4dae-96c1-f092c6e065a9
+
+	measure '고령인구 차이 문구' =
+			
+			VAR DifferenceValue =
+			    [고령인구 전국 대비 차이]
+			RETURN
+			    "전국 대비 "
+			        & IF(DifferenceValue >= 0, "+", "")
+			        & FORMAT(DifferenceValue, "0%")
+		lineageTag: 6d49fb11-ee6d-4213-9b92-f6234b5de1b9
+
+	measure '쉼터 부족 문구' =
+			
+			VAR DifferenceValue =
+			    [쉼터 대응 부족률]
+			RETURN
+			    IF(
+			        DifferenceValue >= 0,
+			        "전국 대비 " & FORMAT(DifferenceValue, "0%") & " 부족",
+			        "전국 대비 " & FORMAT(ABS(DifferenceValue), "0%") & " 높음"
+			    )
+		lineageTag: 525f3d13-2a58-4646-b61d-d1fcd7c3e52b
+
+	measure '쉼터 최댓값' =
+			
+			250
+		formatString: 0
+		lineageTag: 0342d58a-c5a2-42ff-acba-b06bf703f3fc
+
+	measure '전국 기준값' =
+			
+			100
+		formatString: 0
+		lineageTag: 461e175f-4503-4f71-956c-da08880ca7ed
+
+	measure '현재 폭염 사각지대 수' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('시군구'[시군구코드]),
+			    REMOVEFILTERS('시도'),
+			    REMOVEFILTERS('시군구'),
+			    '시군구'[사각지대 유형] = "현재 사각지대"
+			)
+		formatString: 0
+		lineageTag: fc2f689d-b452-485d-b170-81a98820756f
+
+	measure '전국 시군구 수' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('시군구'[시군구코드]),
+			    REMOVEFILTERS('시도'),
+			    REMOVEFILTERS('시군구')
+			)
+		formatString: 0
+		lineageTag: e3f7d35a-b724-4ff7-ab2c-b10d43d6a0ae
+
+	measure '현재 폭염 사각지대 비율' =
+			
+			DIVIDE(
+			    [현재 폭염 사각지대 수],
+			    [전국 시군구 수]
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: b6b842e6-6d6a-4383-be3e-0499a2cf3bd3
+
+	measure '잠재 폭염 사각지대 수' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('시군구'[시군구코드]),
+			    REMOVEFILTERS('시도'),
+			    REMOVEFILTERS('시군구'),
+			    '시군구'[사각지대 유형] = "잠재 사각지대"
+			)
+		formatString: 0
+		lineageTag: f7395ec9-a69d-4643-99c4-0d9873ddb6ee
+
+	measure '현재·잠재 폭염 사각지대 수' =
+			
+			[현재 폭염 사각지대 수]
+			    + [잠재 폭염 사각지대 수]
+		formatString: 0
+		lineageTag: 9f8ae90a-2355-461b-a576-243f69d5519a
+
+	measure '현재·잠재 폭염 사각지대 비율' =
+			
+			DIVIDE(
+			    [현재·잠재 폭염 사각지대 수],
+			    250
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 926c42e6-ed91-4fc5-ac35-d1188921d8a0
+
+	measure 겹침_강조 = ```
+			
+			IF(
+			    SELECTEDVALUE('시군구'[노출높음_Flag]) = 1 
+			    && SELECTEDVALUE('시군구'[민감도높음_Flag]) = 1,
+			    "#AE3535", "#D9B3AE"
+			)
+			```
+		lineageTag: 17a4ff16-49e7-4067-b894-25e45dca868d
+
+	measure '선택 온열질환 피해도' =
+			
+			VAR SelectedValue =
+			    AVERAGE('시군구'[온열질환 발생률_열])
+			RETURN
+			    DIVIDE(
+			        SelectedValue,
+			        [전국 평균 온열질환 발생률],
+			        0
+			    ) * 100
+		lineageTag: e270ec06-9948-4406-8bc9-b59cae663a8d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '선택 고령인구 취약도' =
+			
+			VAR SelectedValue =
+			    AVERAGE('시군구'[고령인구 비율_열])
+			RETURN
+			    DIVIDE(
+			        SelectedValue,
+			        [전국 평균 고령인구 비율],
+			        0
+			    ) * 100
+		lineageTag: c136cf15-5433-4d39-b6d3-638da48e7935
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '선택 쉼터 대응 부족도' =
+			
+			VAR SelectedValue =
+			    AVERAGE(
+			        '시군구'[고령인구 1천명당 수용인원_열]
+			    )
+			RETURN
+			    DIVIDE(
+			        [전국 평균 쉼터 수용 수준],
+			        SelectedValue,
+			        0
+			    ) * 100
+		lineageTag: fe329f51-7c94-41b3-b027-41b51ad0d6ed
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 열1
+		dataType: string
+		isHidden
+		lineageTag: 7415ac9f-dbd2-447b-b228-423ef25bf769
+		summarizeBy: none
+		sourceColumn: 열1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _측정값 = m
+		mode: import
+		source =
+				let
+				    원본 = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [열1 = _t]),
+				    #"변경된 유형" = Table.TransformColumnTypes(원본,{{"열1", type text}})
+				in
+				    #"변경된 유형"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "0205331bb4340d210384",
+  "displayName": "고령/폭염",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "1a4d09a539a9b502b922",
+      "target": "a6c6202a029d8c400110",
+      "type": "DataFilter"
+    },
+    {
+      "source": "1a4d09a539a9b502b922",
+      "target": "4616f5b517db98d5e510",
+      "type": "DataFilter"
+    }
+  ]
+}

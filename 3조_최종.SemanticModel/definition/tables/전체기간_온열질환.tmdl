@@ -1,0 +1,70 @@
+table 전체기간_온열질환
+	lineageTag: f1ed77b0-e611-47aa-9772-b606646797a4
+
+	column 시도
+		dataType: string
+		lineageTag: f225fb07-3e4e-45ca-9ec2-a003a0e11107
+		summarizeBy: none
+		sourceColumn: 시도
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시도코드
+		dataType: string
+		lineageTag: 0c48dbc8-319d-4970-9cf5-472be24ee81f
+		summarizeBy: none
+		sourceColumn: 시도코드
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시군구
+		dataType: string
+		lineageTag: 1eef50dd-16cf-457b-bad3-3b4711a0d7a3
+		summarizeBy: none
+		sourceColumn: 시군구
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시군구코드
+		dataType: string
+		lineageTag: e14c11c5-da66-4651-90b9-d9c7942720c5
+		summarizeBy: none
+		sourceColumn: 시군구코드
+
+		annotation SummarizationSetBy = Automatic
+
+	column 온열질환자수
+		dataType: int64
+		formatString: 0
+		lineageTag: 888ef482-056a-46ee-a3af-d773d372423f
+		summarizeBy: sum
+		sourceColumn: 온열질환자수
+
+		annotation SummarizationSetBy = Automatic
+
+	column 추정사망자수
+		dataType: int64
+		formatString: 0
+		lineageTag: aedd5d10-b6fe-4535-8daa-4c377a2b8ff8
+		summarizeBy: sum
+		sourceColumn: 추정사망자수
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 전체기간_온열질환 = m
+		mode: import
+		source =
+				let
+				    원본 = Excel.Workbook(File.Contents("C:\Users\young\Downloads\온열질환자수.xlsx"), null, true),
+				    전체기간_온열질환_Sheet = 원본{[Item="전체기간_온열질환",Kind="Sheet"]}[Data],
+				    #"승격된 헤더" = Table.PromoteHeaders(전체기간_온열질환_Sheet, [PromoteAllScalars=true]),
+				    #"변경된 유형" = Table.TransformColumnTypes(#"승격된 헤더",{{"시도", type text}, {"시도코드", Int64.Type}, {"시군구", type text}, {"시군구코드", Int64.Type}, {"온열질환자수", Int64.Type}, {"추정사망자수", Int64.Type}}),
+				    #"제거된 빈 행" = Table.SelectRows(#"변경된 유형", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"변경된 유형1" = Table.TransformColumnTypes(#"제거된 빈 행",{{"시도코드", type text}, {"시군구코드", type text}})
+				in
+				    #"변경된 유형1"
+
+	annotation PBI_NavigationStepName = 탐색
+
+	annotation PBI_ResultType = Table
+

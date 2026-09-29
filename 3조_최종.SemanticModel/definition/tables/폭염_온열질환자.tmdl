@@ -1,0 +1,267 @@
+table 폭염_온열질환자
+	lineageTag: 0f7fdafa-a794-4fb1-bec0-184d7a136410
+
+	measure 온열질환자수 = SUM('폭염_온열질환자'[전체])
+		formatString: 0
+		lineageTag: 376b33f1-254c-4bb1-bdcc-dd510e90adbe
+
+	measure 실내환자수 = SUM('폭염_온열질환자'[실내_소계])
+		formatString: 0
+		lineageTag: 699ba447-9634-420b-ac21-0247b70adad2
+
+	measure 실외환자수 = SUM('폭염_온열질환자'[실외_소계])
+		formatString: 0
+		lineageTag: c7f80b1d-4ca2-4510-a45f-35386a9dae33
+
+	measure 실외발생비율 = DIVIDE([실외환자수], [온열질환자수])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: acb40911-3607-4198-8a51-079ad30266ad
+
+	measure 실내발생비율 = DIVIDE([실내환자수], [온열질환자수])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 433f20ec-125e-4ea9-9e61-f98a7d3da918
+
+	measure 작업장환자수 = SUM('폭염_온열질환자'[실외_작업장]) + SUM('폭염_온열질환자'[실내_작업장])
+		formatString: 0
+		lineageTag: a9989909-d272-48e3-8fb1-d85a8395b9ec
+
+	measure 작업장환자비율 = DIVIDE([작업장환자수], [온열질환자수])
+		formatString: 0%;-0%;0%
+		lineageTag: d5f4af05-a905-4dbb-a889-a02ee2e9edad
+
+	measure 논밭환자수 = SUM('폭염_온열질환자'[실외_논밭])
+		formatString: 0
+		lineageTag: dcd96dc5-bf4f-420a-84a5-edd3c8934654
+
+	measure 논밭환자비율 = DIVIDE([논밭환자수], [온열질환자수])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 873380cb-953a-4348-8da8-04a3f2f3d1f2
+
+	measure 주거관련환자수 = SUM('폭염_온열질환자'[실외_주거지주변]) + SUM('폭염_온열질환자'[실내_집])
+		formatString: 0
+		lineageTag: a37f487b-93e1-4574-8e04-3332c8198259
+
+	measure 전년온열질환자수 =
+			
+			CALCULATE(
+			    [온열질환자수],
+			    FILTER(ALL('폭염_온열질환자'[기준연도]),
+			        '폭염_온열질환자'[기준연도] = MAX('폭염_온열질환자'[기준연도]) - 1)
+			)
+		formatString: 0
+		lineageTag: 93d1ec3e-b527-428e-90f9-0a06b809704f
+
+	measure 전년대비증감 = [온열질환자수] - [전년온열질환자수]
+		formatString: 0
+		lineageTag: 09c6e411-285d-461c-bd69-23cee6f9d786
+
+	measure 전년대비증감률 = DIVIDE([전년대비증감], [전년온열질환자수])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 35f9fa93-a313-4445-b797-1b389fcfeca9
+
+	measure 5년평균환자수 = CALCULATE(AVERAGE('폭염_온열질환자'[전체]), ALL('폭염_온열질환자'[기준연도]))
+		lineageTag: 63a12e1e-c7e1-4bd6-8ec6-a084fb5d4dd9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 기준연도
+		dataType: int64
+		formatString: 0
+		lineageTag: 46589051-da80-437d-b519-6708298a6f28
+		summarizeBy: sum
+		sourceColumn: 기준연도
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 지역(원본)
+		dataType: string
+		lineageTag: dbbf59b4-671d-4ef7-ad2f-eeb317d92ecc
+		summarizeBy: none
+		sourceColumn: 지역(원본)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시도코드
+		dataType: string
+		lineageTag: 84c18b0c-1828-4cbc-9fa0-a870d3b16cfb
+		summarizeBy: none
+		sourceColumn: 시도코드
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시도
+		dataType: string
+		lineageTag: cb5bb78d-2a10-498f-b9f0-d2de117d363f
+		summarizeBy: none
+		sourceColumn: 시도
+
+		annotation SummarizationSetBy = Automatic
+
+	column 구분
+		dataType: string
+		lineageTag: 08f1be57-bf32-4bc1-b19a-b6911178b92d
+		summarizeBy: none
+		sourceColumn: 구분
+
+		annotation SummarizationSetBy = Automatic
+
+	column 전체
+		dataType: int64
+		formatString: 0
+		lineageTag: 1f132cc2-ccee-497f-8314-b1835b97d062
+		summarizeBy: sum
+		sourceColumn: 전체
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실외_소계
+		dataType: int64
+		formatString: 0
+		lineageTag: e3b14460-0f89-4ad1-8a75-8cf7e34879b9
+		summarizeBy: sum
+		sourceColumn: 실외_소계
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실외_작업장
+		dataType: int64
+		formatString: 0
+		lineageTag: 11e09085-7d66-42ae-abba-ceb731099bd4
+		summarizeBy: sum
+		sourceColumn: 실외_작업장
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실외_운동장
+		dataType: int64
+		formatString: 0
+		lineageTag: 995f9e3b-e344-4046-8c00-5b245f530c5c
+		summarizeBy: sum
+		sourceColumn: 실외_운동장
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실외_논밭
+		dataType: int64
+		formatString: 0
+		lineageTag: e2a268ff-a566-4be8-893d-8a5924d8a444
+		summarizeBy: sum
+		sourceColumn: 실외_논밭
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실외_산
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d56d4ed-94f3-472d-8186-c3241d221424
+		summarizeBy: sum
+		sourceColumn: 실외_산
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실외_강가
+		dataType: int64
+		formatString: 0
+		lineageTag: 313b6027-6a3c-42b4-8425-7d71fcbb07b5
+		summarizeBy: sum
+		sourceColumn: 실외_강가
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실외_길가
+		dataType: int64
+		formatString: 0
+		lineageTag: eb382d07-9891-4060-8928-d30f28d47ee4
+		summarizeBy: sum
+		sourceColumn: 실외_길가
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실외_주거지주변
+		dataType: int64
+		formatString: 0
+		lineageTag: e0ffbbc6-f719-45c8-bb95-9f45f6d483d1
+		summarizeBy: sum
+		sourceColumn: 실외_주거지주변
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실외_기타
+		dataType: int64
+		formatString: 0
+		lineageTag: 849a2cd3-bca2-4c47-a471-c2370e246fb1
+		summarizeBy: sum
+		sourceColumn: 실외_기타
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실내_소계
+		dataType: int64
+		formatString: 0
+		lineageTag: 28419968-bef6-4fe1-a0db-c6c3cdf6b777
+		summarizeBy: sum
+		sourceColumn: 실내_소계
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실내_집
+		dataType: int64
+		formatString: 0
+		lineageTag: eebfa398-8669-48d2-8240-fc8cbf4e5f7e
+		summarizeBy: sum
+		sourceColumn: 실내_집
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실내_건물
+		dataType: int64
+		formatString: 0
+		lineageTag: 63158988-7d4e-4029-b7f8-ef1cafe3b8b7
+		summarizeBy: sum
+		sourceColumn: 실내_건물
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실내_작업장
+		dataType: int64
+		formatString: 0
+		lineageTag: 44630ec1-6530-4c81-b581-4a471602a43d
+		summarizeBy: sum
+		sourceColumn: 실내_작업장
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실내_비닐하우스
+		dataType: int64
+		formatString: 0
+		lineageTag: 9299b412-4792-4dc2-8583-a069f3f5a0d6
+		summarizeBy: sum
+		sourceColumn: 실내_비닐하우스
+
+		annotation SummarizationSetBy = Automatic
+
+	column 실내_기타
+		dataType: int64
+		formatString: 0
+		lineageTag: 87f22d53-2cfd-419d-aa1e-537125d215c8
+		summarizeBy: sum
+		sourceColumn: 실내_기타
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 폭염_온열질환자 = m
+		mode: import
+		source =
+				let
+				    원본 = Csv.Document(File.Contents("C:\Users\박현아\Desktop\AX융합과정 실습\(공유)Power BI 프로젝트 -20260730T032209Z-1-001\0803 최종데이터\기초데이터\폭염_온열질환자_20-24.csv"),[Delimiter=",", Columns=21, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"승격된 헤더" = Table.PromoteHeaders(원본, [PromoteAllScalars=true]),
+				    #"변경된 유형" = Table.TransformColumnTypes(#"승격된 헤더",{{"기준연도", type text}, {"지역(원본)", type text}, {"시도코드", type text}, {"시도", type text}, {"구분", type text}, {"전체", Int64.Type}, {"실외_소계", Int64.Type}, {"실외_작업장", Int64.Type}, {"실외_운동장", Int64.Type}, {"실외_논밭", Int64.Type}, {"실외_산", Int64.Type}, {"실외_강가", Int64.Type}, {"실외_길가", Int64.Type}, {"실외_주거지주변", Int64.Type}, {"실외_기타", Int64.Type}, {"실내_소계", Int64.Type}, {"실내_집", Int64.Type}, {"실내_건물", Int64.Type}, {"실내_작업장", Int64.Type}, {"실내_비닐하우스", Int64.Type}, {"실내_기타", Int64.Type}})
+				in
+				    #"변경된 유형"
+
+	annotation PBI_NavigationStepName = 탐색
+
+	annotation PBI_ResultType = Table
+

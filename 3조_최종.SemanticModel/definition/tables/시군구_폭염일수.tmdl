@@ -1,0 +1,85 @@
+table 시군구_폭염일수
+	lineageTag: ebfbb628-5bd1-42ee-b131-a15a31e431df
+
+	measure 폭염일수(표시) =
+			
+			IF(
+			    SELECTEDVALUE('시군구_폭염일수'[폭염_단위구분]) = "관측자료없음_0처리",
+			    BLANK(),
+			    SUM('시군구_폭염일수'[폭염일수]))
+		formatString: 0
+		lineageTag: 705b38ac-4bdc-474a-bd88-fd961dfa1776
+
+	column 시도
+		dataType: string
+		lineageTag: ed335ad4-0cda-43bc-a643-7f35d0cc5cca
+		summarizeBy: none
+		sourceColumn: 시도
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시도코드
+		dataType: string
+		lineageTag: baadb833-371c-4e49-83cb-45e69443ac12
+		summarizeBy: none
+		sourceColumn: 시도코드
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시군구
+		dataType: string
+		lineageTag: a5dfa94c-8bbf-4d35-b16a-8cfd0974c7b0
+		summarizeBy: none
+		sourceColumn: 시군구
+
+		annotation SummarizationSetBy = Automatic
+
+	column 시군구코드
+		dataType: string
+		lineageTag: f05ee3e5-c33d-4432-a58b-175400d51d3d
+		summarizeBy: none
+		sourceColumn: 시군구코드
+
+		annotation SummarizationSetBy = Automatic
+
+	column 폭염일수
+		dataType: int64
+		formatString: 0
+		lineageTag: 711bd467-f97a-4ff5-b916-6fe0c1d59028
+		summarizeBy: sum
+		sourceColumn: 폭염일수
+
+		annotation SummarizationSetBy = Automatic
+
+	column 폭염_단위구분
+		dataType: string
+		lineageTag: 17834a8e-fb40-425c-80a3-e589ca9b7ba9
+		summarizeBy: none
+		sourceColumn: 폭염_단위구분
+
+		annotation SummarizationSetBy = Automatic
+
+	column 폭염_관측단위
+		dataType: string
+		lineageTag: 3b38e9a7-e860-4fde-9ae7-8a68adb59f8a
+		summarizeBy: none
+		sourceColumn: 폭염_관측단위
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 시군구_폭염일수 = m
+		mode: import
+		source =
+				let
+				    원본 = Excel.Workbook(File.Contents("C:\Users\박현아\Desktop\AX융합과정 실습\(공유)Power BI 프로젝트 -20260730T032209Z-1-001\0803 최종데이터\기초데이터\폭염일수_2025기준_최종수정.xlsx"), null, true),
+				    시군구_폭염일수_Sheet = 원본{[Item="시군구_폭염일수",Kind="Sheet"]}[Data],
+				    #"승격된 헤더" = Table.PromoteHeaders(시군구_폭염일수_Sheet, [PromoteAllScalars=true]),
+				    #"변경된 유형" = Table.TransformColumnTypes(#"승격된 헤더",{{"시도", type text}, {"시도코드", type text}, {"시군구", type text}, {"시군구코드", type text}, {"폭염일수", Int64.Type}, {"폭염_단위구분", type text}, {"폭염_관측단위", type text}}),
+				    #"제거된 빈 행" = Table.SelectRows(#"변경된 유형", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+				in
+				    #"제거된 빈 행"
+
+	annotation PBI_NavigationStepName = 탐색
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,155 @@
+table 캘린더
+	lineageTag: 59ed3333-5d44-43b9-a326-92ceb97d2b32
+
+	column 날짜
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b003eb21-405c-40ab-91b0-d81b91b49aa6
+		summarizeBy: none
+		sourceColumn: 날짜
+
+		variation 변형
+			isDefault
+			relationship: 7cd4cfc0-21ce-4fcc-9242-bf292b861887
+			defaultHierarchy: LocalDateTable_44e17739-f5ed-4c28-83a5-9fb24b9802f9.'날짜 계층'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 연도
+		dataType: string
+		lineageTag: 8fab4211-28bb-4af7-9ba2-855312090968
+		summarizeBy: none
+		sourceColumn: 연도
+
+		annotation SummarizationSetBy = Automatic
+
+	column 월
+		dataType: string
+		lineageTag: 552257a4-d7ab-499f-8efe-0b6f1cd0784d
+		summarizeBy: none
+		sourceColumn: 월
+
+		annotation SummarizationSetBy = Automatic
+
+	column 월번호
+		dataType: string
+		lineageTag: f21c5db4-3c1f-47fe-826f-75b6de05f9d6
+		summarizeBy: none
+		sourceColumn: 월번호
+
+		annotation SummarizationSetBy = Automatic
+
+	column 연월
+		dataType: string
+		lineageTag: d5315029-86be-46f3-89fa-e7cb0a9dd05d
+		summarizeBy: none
+		sourceColumn: 연월
+
+		annotation SummarizationSetBy = Automatic
+
+	column 연월정렬
+		dataType: string
+		lineageTag: 0800c022-972c-4b20-b544-aa1ed593e5af
+		summarizeBy: none
+		sourceColumn: 연월정렬
+
+		annotation SummarizationSetBy = Automatic
+
+	column 분기
+		dataType: string
+		lineageTag: 02526079-d5fa-4cf4-be91-f58183bae18e
+		summarizeBy: none
+		sourceColumn: 분기
+
+		annotation SummarizationSetBy = Automatic
+
+	column 요일번호
+		dataType: string
+		lineageTag: 84242e49-9df5-4f3c-9021-f8e4df54847f
+		summarizeBy: none
+		sourceColumn: 요일번호
+
+		annotation SummarizationSetBy = Automatic
+
+	column 요일
+		dataType: string
+		lineageTag: 30ef43ac-bd4d-4321-8459-9d930a795619
+		summarizeBy: none
+		sourceColumn: 요일
+
+		annotation SummarizationSetBy = Automatic
+
+	column 주차
+		dataType: string
+		lineageTag: 9abf5ce6-227b-4091-9cfc-a04d3684c86d
+		summarizeBy: none
+		sourceColumn: 주차
+
+		annotation SummarizationSetBy = Automatic
+
+	column 주말여부
+		dataType: string
+		lineageTag: 254134d6-83ee-439a-8e29-f9b7eeb398cb
+		summarizeBy: none
+		sourceColumn: 주말여부
+
+		annotation SummarizationSetBy = Automatic
+
+	column 계절
+		dataType: string
+		lineageTag: 25dcaa68-17ce-4549-b8b1-50251dc1e562
+		summarizeBy: none
+		sourceColumn: 계절
+
+		annotation SummarizationSetBy = Automatic
+
+	column 월시작일
+		dataType: string
+		lineageTag: 23f7a097-5f4a-419c-b9bd-e9f686948f4d
+		summarizeBy: none
+		sourceColumn: 월시작일
+
+		annotation SummarizationSetBy = Automatic
+
+	column '온열질환 집계기간 여부'
+		dataType: string
+		lineageTag: e62c8566-a6c4-4f44-af52-80d44c76f2ef
+		summarizeBy: none
+		sourceColumn: 온열질환 집계기간 여부
+
+		annotation SummarizationSetBy = Automatic
+
+	column '폭염일수 집계기간 여부'
+		dataType: string
+		lineageTag: 51cba6af-3b3f-4924-947c-6f6594aaf03f
+		summarizeBy: none
+		sourceColumn: 폭염일수 집계기간 여부
+
+		annotation SummarizationSetBy = Automatic
+
+	column '공통 집계기간 여부'
+		dataType: string
+		lineageTag: 1907eeb6-020e-437c-b48e-9ef6d477e3ca
+		summarizeBy: none
+		sourceColumn: 공통 집계기간 여부
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 캘린더 = m
+		mode: import
+		source =
+				let
+				    원본 = Excel.Workbook(File.Contents("C:\Users\young\Downloads\날짜.xlsx"), null, true),
+				    캘린더_Sheet = 원본{[Item="캘린더",Kind="Sheet"]}[Data],
+				    #"승격된 헤더" = Table.PromoteHeaders(캘린더_Sheet, [PromoteAllScalars=true]),
+				    #"제거된 빈 행" = Table.SelectRows(#"승격된 헤더", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"변경된 유형" = Table.TransformColumnTypes(#"제거된 빈 행",{{"날짜", type date}})
+				in
+				    #"변경된 유형"
+
+	annotation PBI_NavigationStepName = 탐색
+
+	annotation PBI_ResultType = Table
+
